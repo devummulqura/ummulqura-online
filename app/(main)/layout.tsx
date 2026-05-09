@@ -9,13 +9,20 @@ export default async function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  await connectToDatabase();
+  let serializedNotifications = [];
   
-  const notifications = await Notification.find({ isActive: true })
-    .sort({ isPinned: -1, createdAt: -1 })
-    .lean();
+  try {
+    await connectToDatabase();
     
-  const serializedNotifications = JSON.parse(JSON.stringify(notifications));
+    const notifications = await Notification.find({ isActive: true })
+      .sort({ isPinned: -1, createdAt: -1 })
+      .lean();
+      
+    serializedNotifications = JSON.parse(JSON.stringify(notifications));
+  } catch (error) {
+    console.error("Failed to fetch notifications:", error);
+    // Continue with empty notifications if DB is down
+  }
 
   return (
     <>

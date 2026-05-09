@@ -10,8 +10,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="relative h-[85vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-primary/9 
-        0 z-10" />
+        <div className="absolute inset-0 bg-primary/90 z-10" />
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: 'url("/image1.jpeg")' }}

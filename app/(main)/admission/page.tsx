@@ -209,7 +209,7 @@ export default function AdmissionPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Course Selection</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="bg-gray-50 dark:bg-zinc-900">
                           <SelectValue placeholder="Select a course" />
@@ -238,7 +238,7 @@ export default function AdmissionPage() {
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                         className="flex gap-6"
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0">
