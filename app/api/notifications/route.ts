@@ -8,8 +8,9 @@ export async function POST(request: Request) {
     const data = await request.json();
     const notification = await Notification.create(data);
     return NextResponse.json({ success: true, data: notification }, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const err = error as { message?: string };
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -19,7 +20,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const activeOnly = searchParams.get('active') === 'true';
     
-    let query: any = {};
+    const query: Record<string, unknown> = {};
     if (activeOnly) {
       query.isActive = true;
       query.$or = [{ expiresAt: { $exists: false } }, { expiresAt: { $gt: new Date() } }];
@@ -27,8 +28,9 @@ export async function GET(request: Request) {
 
     const notifications = await Notification.find(query).sort({ isPinned: -1, createdAt: -1 });
     return NextResponse.json({ success: true, data: notifications }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const err = error as { message?: string };
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -46,8 +48,9 @@ export async function PUT(request: Request) {
     if (!updatedItem) return NextResponse.json({ error: 'Notification not found' }, { status: 404 });
 
     return NextResponse.json({ success: true, data: updatedItem }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const err = error as { message?: string };
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -63,7 +66,8 @@ export async function DELETE(request: Request) {
     if (!deletedItem) return NextResponse.json({ error: 'Notification not found' }, { status: 404 });
 
     return NextResponse.json({ success: true, message: 'Notification deleted successfully' }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const err = error as { message?: string };
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

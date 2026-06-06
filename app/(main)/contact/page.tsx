@@ -26,7 +26,7 @@ export default function ContactPage() {
             transition={{ delay: 0.1 }}
             className="text-xl text-white/80 max-w-2xl mx-auto"
           >
-            Have questions? We're here to help. Reach out to us through any of the following channels.
+            Have questions? We&apos;re here to help. Reach out to us through any of the following channels.
           </motion.p>
         </div>
       </section>

@@ -84,7 +84,7 @@ export default function AdmissionPage() {
       });
       form.reset();
       setPhoto(null);
-    } catch (error) {
+    } catch {
       toast.error("Submission Failed", {
         description: "Something went wrong. Please try again later.",
       });

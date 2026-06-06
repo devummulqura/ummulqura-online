@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { format } from "date-fns";
-import { Loader2, Plus, Edit, Trash2, Pin, Bell, CheckCircle2, XCircle, Info, AlertTriangle } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, Pin, CheckCircle2, XCircle, Info, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -27,9 +26,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { INotification } from "@/lib/types";
 
 export default function NotificationsManagement() {
-  const [notifications, setNotifications] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<INotification[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
@@ -49,21 +49,21 @@ export default function NotificationsManagement() {
     fetchNotifications();
   }, []);
 
-  const fetchNotifications = async () => {
+  async function fetchNotifications() {
     try {
       const res = await fetch("/api/notifications");
       const data = await res.json();
       if (data.success) {
         setNotifications(data.data);
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to load notifications");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const handleOpenDialog = (item?: any) => {
+  const handleOpenDialog = (item?: INotification) => {
     if (item) {
       setFormData({
         _id: item._id,
@@ -112,8 +112,9 @@ export default function NotificationsManagement() {
       } else {
         throw new Error(data.error);
       }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to save notification");
+    } catch (error) {
+      const err = error as { message?: string };
+      toast.error(err.message || "Failed to save notification");
     } finally {
       setIsSubmitting(false);
     }
@@ -131,8 +132,9 @@ export default function NotificationsManagement() {
       } else {
         throw new Error(data.error);
       }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to delete notification");
+    } catch (error) {
+      const err = error as { message?: string };
+      toast.error(err.message || "Failed to delete notification");
     } finally {
       setIsSubmitting(false);
       setItemToDelete(null);
@@ -147,7 +149,7 @@ export default function NotificationsManagement() {
         body: JSON.stringify({ isPinned: !currentPinStatus }),
       });
       if (res.ok) fetchNotifications();
-    } catch (error) {
+    } catch {
       toast.error("Failed to update pin status");
     }
   };

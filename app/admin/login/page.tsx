@@ -58,8 +58,9 @@ export default function AdminLogin() {
 
       toast.success("Login Successful");
       router.push("/admin/dashboard");
-    } catch (error: any) {
-      toast.error("Login Failed", { description: error.message });
+    } catch (error) {
+      const err = error as { message?: string };
+      toast.error("Login Failed", { description: err.message });
     } finally {
       setIsLoggingIn(false);
     }

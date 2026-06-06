@@ -31,34 +31,34 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { IStudent } from "@/lib/types";
 
 export default function AdmissionsPage() {
-  const [students, setStudents] = useState<any[]>([]);
+  const [students, setStudents] = useState<IStudent[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("All");
-  const [selectedStudent, setSelectedStudent] = useState<any | null>(null);
+  const [selectedStudent, setSelectedStudent] = useState<IStudent | null>(null);
   const [studentToDelete, setStudentToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
+    async function fetchAdmissions() {
+      try {
+        const res = await fetch("/api/admission");
+        const data = await res.json();
+        if (data.success) {
+          setStudents(data.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch admissions", error);
+        toast.error("Failed to load admissions");
+      } finally {
+        setLoading(false);
+      }
+    }
     fetchAdmissions();
   }, []);
-
-  const fetchAdmissions = async () => {
-    try {
-      const res = await fetch("/api/admission");
-      const data = await res.json();
-      if (data.success) {
-        setStudents(data.data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch admissions", error);
-      toast.error("Failed to load admissions");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDelete = async () => {
     if (!studentToDelete) return;
@@ -74,8 +74,9 @@ export default function AdmissionsPage() {
       } else {
         throw new Error(data.error);
       }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to delete application");
+    } catch (error) {
+      const err = error as { message?: string };
+      toast.error(err.message || "Failed to delete application");
     } finally {
       setIsDeleting(false);
       setStudentToDelete(null);
@@ -135,13 +136,14 @@ export default function AdmissionsPage() {
             />
           </div>
           <DropdownMenu>
-            {/* @ts-ignore */}
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-full sm:w-auto rounded-xl bg-white dark:bg-zinc-900 border-border">
-                <Filter className="w-4 h-4 mr-2 text-muted-foreground" />
-                {filterStatus}
-              </Button>
-            </DropdownMenuTrigger>
+            <DropdownMenuTrigger
+              render={
+                <Button variant="outline" className="w-full sm:w-auto rounded-xl bg-white dark:bg-zinc-900 border-border">
+                  <Filter className="w-4 h-4 mr-2 text-muted-foreground" />
+                  {filterStatus}
+                </Button>
+              }
+            />
             <DropdownMenuContent align="end" className="w-40 rounded-xl">
               <DropdownMenuItem onClick={() => setFilterStatus("All")}>All Statuses</DropdownMenuItem>
               <DropdownMenuItem onClick={() => setFilterStatus("Pending")}>Pending</DropdownMenuItem>
@@ -310,7 +312,7 @@ export default function AdmissionsPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Application?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the student's admission application and remove their data from our servers.
+              This action cannot be undone. This will permanently delete the student&apos;s admission application and remove their data from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

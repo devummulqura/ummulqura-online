@@ -1,6 +1,6 @@
 "use client";
 
-import { Users, Newspaper, Image as ImageIcon, BellRing, TrendingUp, Calendar as CalendarIcon, ArrowUpRight } from "lucide-react";
+import { Users, Newspaper, Image as ImageIcon, BellRing, Calendar as CalendarIcon, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { 
   AreaChart, 
@@ -46,7 +46,7 @@ export default function AdminDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold font-heading text-foreground">Dashboard Overview</h1>
-          <p className="text-muted-foreground mt-1">Welcome back, here's what's happening at Ummul Institute.</p>
+          <p className="text-muted-foreground mt-1">Welcome back, here&apos;s what&apos;s happening at Ummul Institute.</p>
         </div>
         <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground bg-white dark:bg-zinc-900 px-4 py-2 rounded-xl shadow-sm border border-border">
           <CalendarIcon className="w-4 h-4" />

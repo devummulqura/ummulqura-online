@@ -6,9 +6,10 @@ import { format } from "date-fns";
 import { Calendar, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { INews } from "@/lib/types";
 
 export default function NewsPage() {
-  const [news, setNews] = useState<any[]>([]);
+  const [news, setNews] = useState<INews[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

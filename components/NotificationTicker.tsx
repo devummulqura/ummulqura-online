@@ -1,9 +1,9 @@
 "use client";
 
 import { AlertTriangle, Info, CheckCircle2, XCircle, Pin } from "lucide-react";
-import Link from "next/link";
+import { INotification } from "@/lib/types";
 
-export function NotificationTicker({ notifications }: { notifications: any[] }) {
+export function NotificationTicker({ notifications }: { notifications: INotification[] }) {
   if (!notifications || notifications.length === 0) return null;
 
   return (

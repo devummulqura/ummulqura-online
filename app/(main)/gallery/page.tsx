@@ -4,11 +4,12 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { IGallery } from "@/lib/types";
 
 export default function GalleryPage() {
-  const [images, setImages] = useState<any[]>([]);
+  const [images, setImages] = useState<IGallery[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedImage, setSelectedImage] = useState<any | null>(null);
+  const [selectedImage, setSelectedImage] = useState<IGallery | null>(null);
 
   useEffect(() => {
     const fetchGallery = async () => {

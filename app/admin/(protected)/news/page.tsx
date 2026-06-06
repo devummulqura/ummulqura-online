@@ -15,7 +15,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   AlertDialog,
@@ -28,12 +27,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Checkbox } from "@/components/ui/checkbox";
+import { INews } from "@/lib/types";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false, loading: () => <div className="h-40 bg-gray-100 dark:bg-zinc-800 animate-pulse rounded-md" /> });
 import "react-quill-new/dist/quill.snow.css";
 
 export default function NewsManagement() {
-  const [newsList, setNewsList] = useState<any[]>([]);
+  const [newsList, setNewsList] = useState<INews[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newsToDelete, setNewsToDelete] = useState<string | null>(null);
@@ -57,21 +57,21 @@ export default function NewsManagement() {
     fetchNews();
   }, []);
 
-  const fetchNews = async () => {
+  async function fetchNews() {
     try {
       const res = await fetch("/api/news?all=true");
       const data = await res.json();
       if (data.success) {
         setNewsList(data.data);
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to load news articles");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const handleOpenDialog = (news?: any) => {
+  const handleOpenDialog = (news?: INews) => {
     if (news) {
       setFormData({
         _id: news._id,
@@ -146,8 +146,9 @@ export default function NewsManagement() {
       } else {
         throw new Error(data.error);
       }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to save news article");
+    } catch (error) {
+      const err = error as { message?: string };
+      toast.error(err.message || "Failed to save news article");
     } finally {
       setIsSubmitting(false);
     }
@@ -165,8 +166,9 @@ export default function NewsManagement() {
       } else {
         throw new Error(data.error);
       }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to delete news");
+    } catch (error) {
+      const err = error as { message?: string };
+      toast.error(err.message || "Failed to delete news");
     } finally {
       setIsSubmitting(false);
       setNewsToDelete(null);

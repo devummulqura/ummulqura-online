@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 
 export default function SettingsManagement() {
   const [loading, setLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   
   useEffect(() => {
     // Simulate fetching admin settings

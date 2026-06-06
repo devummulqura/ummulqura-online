@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     }
 
     const buffer = Buffer.from(await imageFile.arrayBuffer());
-    const uploadResult: any = await uploadToCloudinary(buffer, 'ummul_gallery');
+    const uploadResult = await uploadToCloudinary(buffer, 'ummul_gallery') as { secure_url: string };
     
     const galleryItem = await Gallery.create({
       title,
@@ -30,8 +30,9 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ success: true, data: galleryItem }, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const err = error as { message?: string };
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -41,13 +42,14 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
     
-    let query: any = {};
+    const query: Record<string, string> = {};
     if (category) query.category = category;
 
     const items = await Gallery.find(query).sort({ createdAt: -1 });
     return NextResponse.json({ success: true, data: items }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const err = error as { message?: string };
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -60,7 +62,7 @@ export async function PUT(request: Request) {
     if (!id) return NextResponse.json({ error: 'Gallery ID is required' }, { status: 400 });
 
     const formData = await request.formData();
-    const updateData: any = {};
+    const updateData: Record<string, string | FormDataEntryValue> = {};
     
     ['title', 'category', 'description', 'eventName'].forEach(key => {
       const val = formData.get(key);
@@ -70,7 +72,7 @@ export async function PUT(request: Request) {
     const imageFile = formData.get('image') as File | null;
     if (imageFile) {
       const buffer = Buffer.from(await imageFile.arrayBuffer());
-      const uploadResult: any = await uploadToCloudinary(buffer, 'ummul_gallery');
+      const uploadResult = await uploadToCloudinary(buffer, 'ummul_gallery') as { secure_url: string };
       updateData.imageUrl = uploadResult.secure_url;
     }
 
@@ -79,8 +81,9 @@ export async function PUT(request: Request) {
     if (!updatedItem) return NextResponse.json({ error: 'Gallery item not found' }, { status: 404 });
 
     return NextResponse.json({ success: true, data: updatedItem }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const err = error as { message?: string };
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -96,7 +99,8 @@ export async function DELETE(request: Request) {
     if (!deletedItem) return NextResponse.json({ error: 'Gallery item not found' }, { status: 404 });
 
     return NextResponse.json({ success: true, message: 'Image deleted successfully' }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const err = error as { message?: string };
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

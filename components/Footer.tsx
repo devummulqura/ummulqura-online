@@ -92,7 +92,7 @@ export function Footer() {
             <div className="bg-white/10 p-5 rounded-xl border border-white/10 relative overflow-hidden group">
                <div className="absolute top-0 right-0 w-24 h-24 bg-accent/20 rounded-bl-full -z-10 group-hover:scale-110 transition-transform"></div>
                <p className="italic text-sm text-primary-foreground/90 leading-relaxed font-heading">
-                "{siteConfig.quote.text}"
+               &quot;{siteConfig.quote.text}&quot;
                </p>
                <p className="text-xs text-accent mt-3 font-semibold">- {siteConfig.quote.source}</p>
             </div>

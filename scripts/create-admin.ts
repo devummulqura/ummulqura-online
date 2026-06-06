@@ -1,13 +1,11 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env' });
 
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
-import User from '../models/User';
-import connectToDatabase from '../lib/db';
-
 async function createAdmin() {
   try {
+    const { default: connectToDatabase } = await import('../lib/db');
+    const { default: User } = await import('../models/User');
+
     await connectToDatabase();
     
     const adminEmail = 'admin@ummul.edu';

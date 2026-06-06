@@ -10,23 +10,26 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="relative h-[85vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-primary/90 z-10" />
+        <div className="absolute inset-0 bg-primary/15 z-10" />
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: 'url("/image1.jpeg")' }}
         />
 
-        <div className="container mx-auto px-4 relative z-20 text-center text-white mt-16">
+        <div className="container mx-auto px-4 relative z-20 text-center text-white mt-16  rounded-2xl">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold mb-6 leading-tight"
           >
-            Welcome to <span className="text-accent">Ummul</span>
-            <br />
-            Islamic Institute
-          </motion.h1>
+            <div className="mt-10">
+              <span className="text-accent mt-10">Ummul Qura</span>
+            </div>
+
+            <div className="-mt-4 md:-mt-6">
+              <span className=" text-2xl md:text-5xl  ">The Strength of Education</span>
+            </div>          </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -100,12 +103,11 @@ export default function Home() {
               <div className="relative">
                 <div className="absolute -inset-4 bg-primary/20 rounded-3xl transform rotate-3 z-0"></div>
                 <img
-                  src="https://images.unsplash.com/photo-1601142634808-38923eb7c560?auto=format&fit=crop&q=80"
-                  alt="Institute Building"
+                  src="/image2.jpeg"
                   className="rounded-3xl shadow-2xl relative z-10 w-full h-[500px] object-cover"
                 />
                 <div className="absolute -bottom-6 -right-6 glass-card p-6 rounded-2xl z-20">
-                  <p className="text-4xl font-bold text-primary font-heading mb-1">15+</p>
+                  <p className="text-4xl font-bold text-primary font-heading mb-1">10+</p>
                   <p className="text-sm font-medium text-muted-foreground">Years of Excellence</p>
                 </div>
               </div>

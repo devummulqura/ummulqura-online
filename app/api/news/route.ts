@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     const imageFile = formData.get('image') as File | null;
     if (imageFile) {
       const buffer = Buffer.from(await imageFile.arrayBuffer());
-      const uploadResult: any = await uploadToCloudinary(buffer, 'ummul_news');
+      const uploadResult = await uploadToCloudinary(buffer, 'ummul_news') as { secure_url: string };
       imageUrl = uploadResult.secure_url;
     }
 
@@ -41,8 +41,9 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ success: true, data: news }, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const err = error as { message?: string };
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -53,14 +54,15 @@ export async function GET(request: Request) {
     const category = searchParams.get('category');
     const all = searchParams.get('all'); // Admin flag to fetch drafts too
     
-    let query: any = {};
+    const query: Record<string, string | boolean> = {};
     if (!all) query.isPublished = true;
     if (category) query.category = category;
 
     const newsList = await News.find(query).sort({ date: -1 });
     return NextResponse.json({ success: true, data: newsList }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const err = error as { message?: string };
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -73,7 +75,7 @@ export async function PUT(request: Request) {
     if (!id) return NextResponse.json({ error: 'News ID is required' }, { status: 400 });
 
     const formData = await request.formData();
-    const updateData: any = {};
+    const updateData: Record<string, string | boolean | string[] | FormDataEntryValue> = {};
     
     ['title', 'content', 'summary', 'category', 'subtitle', 'caption'].forEach(key => {
       const val = formData.get(key);
@@ -91,7 +93,7 @@ export async function PUT(request: Request) {
     const imageFile = formData.get('image') as File | null;
     if (imageFile) {
       const buffer = Buffer.from(await imageFile.arrayBuffer());
-      const uploadResult: any = await uploadToCloudinary(buffer, 'ummul_news');
+      const uploadResult = await uploadToCloudinary(buffer, 'ummul_news') as { secure_url: string };
       updateData.imageUrl = uploadResult.secure_url;
     }
 
@@ -100,8 +102,9 @@ export async function PUT(request: Request) {
     if (!updatedNews) return NextResponse.json({ error: 'News not found' }, { status: 404 });
 
     return NextResponse.json({ success: true, data: updatedNews }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const err = error as { message?: string };
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -117,7 +120,8 @@ export async function DELETE(request: Request) {
     if (!deletedNews) return NextResponse.json({ error: 'News not found' }, { status: 404 });
 
     return NextResponse.json({ success: true, message: 'News deleted successfully' }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const err = error as { message?: string };
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

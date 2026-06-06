@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { format } from "date-fns";
 import { Loader2, Plus, Edit, Trash2, Image as ImageIcon, UploadCloud } from "lucide-react";
 import { toast } from "sonner";
 import { useDropzone } from "react-dropzone";
@@ -26,9 +25,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { IGallery } from "@/lib/types";
 
 export default function GalleryManagement() {
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState<IGallery[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
@@ -50,21 +50,21 @@ export default function GalleryManagement() {
     fetchGallery();
   }, []);
 
-  const fetchGallery = async () => {
+  async function fetchGallery() {
     try {
       const res = await fetch("/api/gallery");
       const data = await res.json();
       if (data.success) {
         setItems(data.data);
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to load gallery items");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const handleOpenDialog = (item?: any) => {
+  const handleOpenDialog = (item?: IGallery) => {
     if (item) {
       setFormData({
         _id: item._id,
@@ -140,8 +140,9 @@ export default function GalleryManagement() {
       } else {
         throw new Error(data.error);
       }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to save gallery item");
+    } catch (error) {
+      const err = error as { message?: string };
+      toast.error(err.message || "Failed to save gallery item");
     } finally {
       setIsSubmitting(false);
     }
@@ -159,8 +160,9 @@ export default function GalleryManagement() {
       } else {
         throw new Error(data.error);
       }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to delete image");
+    } catch (error) {
+      const err = error as { message?: string };
+      toast.error(err.message || "Failed to delete image");
     } finally {
       setIsSubmitting(false);
       setItemToDelete(null);
