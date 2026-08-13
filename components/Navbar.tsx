@@ -23,6 +23,7 @@ const routes = [
   { href: "/news", label: "News" },
   { href: "/gallery", label: "Gallery" },
   { href: "/admission", label: "Admission" },
+  { href: "/badriyya-majlis", label: "Badriyya Majlis" },
   { href: "/contact", label: "Contact" },
 ];
 

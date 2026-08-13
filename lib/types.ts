@@ -80,3 +80,17 @@ export interface ISettings {
   createdAt: string | Date;
   updatedAt: string | Date;
 }
+
+export interface IBadriyyaMajlis {
+  _id: string;
+  name: string;
+  phone: string;
+  age: number;
+  houseName: string;
+  mahallu: string;
+  district: string;
+  photoUrl?: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+}
+

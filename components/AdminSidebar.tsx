@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { 
   LayoutDashboard, 
   Users, 
+  UserCheck,
   Newspaper, 
   Image as ImageIcon, 
   Settings, 
@@ -23,6 +24,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin/dashboard" },
   { icon: Users, label: "Admissions", href: "/admin/admissions" },
+  { icon: UserCheck, label: "Badriyya Majlis", href: "/admin/badriyya-majlis" },
   { icon: Newspaper, label: "News & Events", href: "/admin/news" },
   { icon: ImageIcon, label: "Gallery", href: "/admin/gallery" },
   { icon: BellRing, label: "Notifications", href: "/admin/notifications" },
